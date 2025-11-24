@@ -165,7 +165,7 @@ const destinations = [
         id: 'montenegro',
         name: 'Чорногорія',
         season: 'Червень - Вересень',
-        image: 'https://images.unsplash.com/photo-1565627704559-b1c662704017?q=80&w=1974&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1565627704559-b1c662704017?q=80&w=2070&auto=format&fit=crop',
         desc: 'Перлина Адріатики. Неймовірні гори, що спускаються прямо в море, та старовинні міста Которської затоки.',
         highlights: ['Неймовірна природа', 'Адріатичне море', 'Старі міста', 'Екскурсії'],
         gridClass: 'wide',
