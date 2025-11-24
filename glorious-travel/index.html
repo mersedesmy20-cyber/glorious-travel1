@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glorious Travel | Ваші ідеальні подорожі</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Critical CSS to prevent FOUC */
+        body {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background-color: #fdfbf7;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Particles Canvas -->
+    <canvas id="season-particles"></canvas>
+
+    <nav class="glass-nav">
+        <a href="#" class="logo">
+            <span class="logo-icon">✈️</span>
+            <div class="logo-text">
+                GLORIOUS<span class="highlight">TRAVEL</span>
+            </div>
+        </a>
+
+        <div class="nav-controls">
+            <button id="season-toggle" class="season-btn" title="Змінити сезон">
+                <span class="season-icon">☀️</span>
+            </button>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="overlay-menu">
+        <div class="menu-content">
+            <a href="#hero">Пошук</a>
+            <a href="#promo">Зима vs Літо</a>
+            <a href="#destinations">Напрямки</a>
+            <a href="#contact">Контакти</a>
+        </div>
+    </div>
+
+    <main>
+        <section id="hero" class="hero-section">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <h1 class="fade-in">Куди летимо?</h1>
+
+                <div class="search-container fade-in">
+                    <div class="search-bar">
+                        <div class="search-icon">🔍</div>
+                        <input type="text" id="destination-search" placeholder="Туреччина, Буковель, Амстердам...">
+                        <button class="search-btn">Знайти тур</button>
+                    </div>
+                    <div class="search-tags">
+                        <span data-tag="Море">#Море</span>
+                        <span data-tag="Гори">#Гори</span>
+                        <span data-tag="Європа">#Європа</span>
+                        <span data-tag="Екзотика">#Екзотика</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="marquee-container">
+            <div class="marquee-content">
+                🔥 Туреччина від 300$ 🔥 Єгипет "Все включено" від 400$ 🔥 Буковель вікенд від 200$ 🔥 Амстердам Новий
+                Рік від 600$ 🔥
+                🔥 Туреччина від 300$ 🔥 Єгипет "Все включено" від 400$ 🔥 Буковель вікенд від 200$ 🔥 Амстердам Новий
+                Рік від 600$ 🔥
+            </div>
+        </div>
+
+        <!-- New Year Promo Section -->
+        <section id="promo" class="promo-section">
+            <h2 class="section-title">Обери свій <span class="highlight">Вайб</span></h2>
+            <div class="promo-grid">
+                <div class="promo-card winter">
+                    <div class="promo-bg"
+                        style="background-image: url('https://images.unsplash.com/photo-1517299321609-52687d1bc55a?q=80&w=2070&auto=format&fit=crop')">
+                    </div>
+                    <div class="promo-content">
+                        <h3>Зимова Казка ❄️</h3>
+                        <p>Лижі, глінтвейн та затишні шале.</p>
+                        <button class="promo-btn" onclick="filterByTag('Гори')">Хочу в гори</button>
+                    </div>
+                </div>
+                <div class="promo-card summer">
+                    <div class="promo-bg"
+                        style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop')">
+                    </div>
+                    <div class="promo-content">
+                        <h3>Вічне Літо ☀️</h3>
+                        <p>Сонце, море та безлімітний релакс.</p>
+                        <button class="promo-btn" onclick="filterByTag('Море')">Хочу на море</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="destinations" class="destinations-section">
+            <h2 class="section-title">Популярні <span class="highlight">Напрямки</span></h2>
+
+            <div class="bento-grid" id="destinations-grid">
+                <!-- Cards will be injected via JS -->
+            </div>
+        </section>
+
+        <!-- Enhanced Destination Modal -->
+        <div id="destination-modal" class="modal">
+            <div class="modal-content">
+                <button class="close-modal">&times;</button>
+                <div class="modal-body">
+                    <div class="modal-image"></div>
+                    <div class="modal-info">
+                        <div class="modal-header">
+                            <h2 id="modal-title">Назва країни</h2>
+                            <div class="modal-season">
+                                <span class="icon">☀️</span> <span id="modal-season-text">Сезон</span>
+                            </div>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div class="modal-tabs">
+                            <button class="tab-btn active" data-tab="overview">Огляд</button>
+                            <button class="tab-btn" data-tab="guide">Гід туриста</button>
+                            <button class="tab-btn" data-tab="hotels">Готелі</button>
+                        </div>
+
+                        <!-- Tab Content -->
+                        <div class="tab-content active" id="tab-overview">
+                            <p id="modal-desc">Опис...</p>
+                            <h3>Чому варто відвідати:</h3>
+                            <ul id="modal-highlights"></ul>
+                        </div>
+
+                        <div class="tab-content" id="tab-guide">
+                            <div class="guide-block">
+                                <h4>🛍️ Що купити:</h4>
+                                <p id="guide-buy">...</p>
+                            </div>
+                            <div class="guide-block">
+                                <h4>🍽️ Що скуштувати:</h4>
+                                <p id="guide-eat">...</p>
+                            </div>
+                            <div class="guide-block">
+                                <h4>💡 Порада:</h4>
+                                <p id="guide-tip">...</p>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="tab-hotels">
+                            <div class="modal-hotels-grid" id="modal-hotels">
+                                <!-- Hotels injected via JS -->
+                            </div>
+                        </div>
+
+                        <a href="https://t.me/lizazakharchenko" target="_blank" class="book-btn">Замовити розрахунок</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="contact" class="contact-section">
+            <div class="contact-container">
+                <h2>Готові до подорожі?</h2>
+                <p>Напишіть нам, і ми організуємо вашу ідеальну відпустку.</p>
+                <div class="contact-links">
+                    <a href="https://t.me/lizazakharchenko" target="_blank" class="contact-card">
+                        <span class="icon">✈️</span>
+                        <h3>Telegram</h3>
+                        <p>@lizazakharchenko</p>
+                    </a>
+                    <a href="tel:+380939362967" class="contact-card">
+                        <span class="icon">📞</span>
+                        <h3>Телефон</h3>
+                        <p>+380 93 936 2967</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">GLORIOUS TRAVEL</div>
+            <p>&copy; 2024 Glorious Travel Agency. Всі права захищені.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
